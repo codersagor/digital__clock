@@ -1,48 +1,29 @@
 function showTime() {
-    let date = new Date();
-    let hourss = date.getHours(); // 0-23
-    let miniutes = date.getMinutes(); // 0 - 60
-    let seconds = date.getSeconds();
+    const date = new Date();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const formatHours = hours >= 12 ? 'PM' : 'AM';
 
-    let formatHours = convertFormat(hourss);
-    let hours = checkTime(hourss);
+    // Convert to 12-hour format
+    hours = hours % 12 || 12;
 
-    hours = addZero(hours)
-    miniutes = addZero(miniutes)
-    seconds = addZero(seconds)
+    // Pad with leading zeros
+    hours = addZero(hours);
+    const paddedMinutes = addZero(minutes);
+    const paddedSeconds = addZero(seconds);
 
-    document.getElementById('clock').innerHTML = `${hours} : ${miniutes} : ${seconds} : ${formatHours}`
-    
-}
-
-function convertFormat(time) {
-    let format = 'AM';
-    if(time >= 12) {
-        format = 'Pm'
-    }else {
-        format = 'AM'
-    }
-
-    return format;
-}
-
-function checkTime(time) {
-    if(time > 12) {
-        time = time - 12;
-    };
-
-    if(time === 0) {
-        time = 12;
-    }
-    return time;
+    // Display the time in the HTML element
+    const clock = document.getElementById('clock');
+    clock.innerHTML = `${hours} : ${paddedMinutes} : ${paddedSeconds} ${formatHours}`;
 }
 
 function addZero(time) {
-    if (time < 10){
-        time = "0" + time
-    }
-    return time;
+    return time < 10 ? `0${time}` : time;
 }
-showTime()
 
-setInterval(showTime,100)
+// Call the showTime function once to initialize the clock
+showTime();
+
+// Call the showTime function every 100 milliseconds to update the clock
+setInterval(showTime, 100);
